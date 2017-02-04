@@ -25,31 +25,27 @@ if ($mysqli->connect_errno) {
 
             move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $fileId . ".temp");
 
-            $pid = pcntl_fork();
+            $video = $ffmpeg->open('uploads/' . $fileId . ".temp");
 
-            if ($pid) {
-                if (!$mysqli->query("INSERT INTO videos(video_id, video_title, video_desc) VALUES ('$fileId', '$title', '$description')")) {
-                    $return["message"] = "failed: (" . $mysqli->errno . ") " . $mysqli->error;
-                    $return["error"] = true;
-                }
-                $return["message"] = $fileId;
-            } else {
-                $video = $ffmpeg->open('uploads/' . $fileId . ".temp");
+            $video
+                ->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(1))
+                ->save("uploads/$fileId.jpg");
 
-                $video
-                    ->frame(FFMpeg\Coordinate\TimeCode::fromSeconds(1))
-                    ->save("uploads/$fileId.jpg");
+            $format = new FFMpeg\Format\Video\X264();
 
-                $format = new FFMpeg\Format\Video\X264();
+            $format->setAudioCodec("libmp3lame");
 
-                $format->setAudioCodec("libmp3lame");
+            $format->on('progress', function ($video, $format, $percentage) {
+                $_SESSION["progress"] = "$percentage% processed";
+            });
 
-                $format->on('progress', function ($video, $format, $percentage) {
-                    $_SESSION["progress"] = "$percentage% processed";
-                });
+            $video->save($format, "uploads/$fileId.mp4");
 
-                $video->save($format, "uploads/$fileId.mp4");
+            if (!$mysqli->query("INSERT INTO videos(video_id, video_title, video_desc) VALUES ('$fileId', '$title', '$description')")) {
+                $return["message"] = "failed: (" . $mysqli->errno . ") " . $mysqli->error;
+                $return["error"] = true;
             }
+            $return["message"] = $fileId;
         }
     } else {
         $return["message"] = "No file uploaded!";
