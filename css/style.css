@@ -1,0 +1,111 @@
+body {
+    font-size: 100%;
+    font-family: sans-serif;
+
+    line-height: 1.4;
+    padding: 5px;
+
+    max-width: 1000px;
+    max-height: 100vh;
+    margin: 0 auto;
+
+    background: #111;
+
+    color: #eee;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+.left {
+    float: left;
+}
+
+.right {
+    float: right;
+}
+
+label, fieldset {
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    display: block;
+}
+
+fieldset {
+    border: 2px solid #333;
+}
+
+div > label {
+    display: inline-block;
+}
+
+label > input[type='range'],
+label > input[type='text'],
+label > input[type='number'],
+label > input[type='email'],
+label > textarea,
+label > select {
+    display: block;
+}
+
+textarea {
+    width: 20%;
+    height: 80px;
+}
+
+input, textarea, select {
+    padding: 5px;
+    width: 100%;
+    background: #444;
+    border: 2px solid #555;
+    color: #eee;
+    font-family: sans-serif;
+}
+
+.error {
+    border: 2px solid #AC2020;
+    font-weight: bold;
+}
+
+.upload_box {
+    background: #444;
+    width: 100%;
+    font-size: 32px;
+    padding: 5px;
+    font-weight: bold;
+
+    color: #ccc;
+
+    height: 200px;
+}
+
+.upload_box > span {
+    position: relative;
+    float: left;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.submit {
+    width: 200px;
+    height: 48px;
+    font-size: 24px;
+}
+
+#fileselect {
+    display: none;
+}
+
+video {
+    max-width: 100%;
+}
+
+.description {
+    word-wrap: break-word;
+}

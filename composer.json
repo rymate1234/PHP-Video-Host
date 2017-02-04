@@ -1,0 +1,15 @@
+{
+  "name": "rymate1234/rymate_videos",
+  "description": "video host for php",
+  "minimum-stability": "stable",
+  "license": "WTFPL",
+  "authors": [
+    {
+      "name": "rymate1234",
+      "email": "ryan.murthick@gmail.com"
+    }
+  ],
+  "require": {
+    "php-ffmpeg/php-ffmpeg": "0.8.0"
+  }
+}
