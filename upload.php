@@ -3,6 +3,7 @@
 session_start();
 require __DIR__ . '/vendor/autoload.php';
 require "db.php";
+ignore_user_abort(true);
 
 header('Content-type: application/json');
 

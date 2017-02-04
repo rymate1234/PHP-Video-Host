@@ -30,7 +30,7 @@ if ($result = $mysqli->query("SELECT video_title, video_desc, video_uploaded FRO
 
 <body>
 
-<h1><?php echo $row[0] ?></h1>
+<h1><?php echo htmlspecialchars($row[0]) ?></h1>
 <?php
 if (file_exists("uploads/$value.mp4")) { ?>
     <video controls>
@@ -50,7 +50,7 @@ if ($desc !== "") {
     ?>
     <fieldset class="description">
         <legend class="bold">Description</legend>
-        <textarea readonly><?php echo $desc ?></textarea>
+        <textarea readonly><?php echo htmlspecialchars($desc) ?></textarea>
     </fieldset>
     <?php
 }
