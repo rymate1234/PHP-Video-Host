@@ -1,6 +1,4 @@
 <?php
-// Start the session
-session_start();
 require __DIR__ . '/vendor/autoload.php';
 require "db.php";
 ignore_user_abort(true);
@@ -26,6 +24,27 @@ if ($mysqli->connect_errno) {
 
             move_uploaded_file($_FILES['file']['tmp_name'], 'uploads/' . $fileId . ".temp");
 
+            ob_end_clean();
+            header("Connection: close");
+            ignore_user_abort(true);
+            ob_start();
+
+            if (!$mysqli->query("INSERT INTO videos(video_id, video_title, video_desc) VALUES ('$fileId', '$title', '$description')")) {
+                $return["message"] = "failed: (" . $mysqli->errno . ") " . $mysqli->error;
+                $return["error"] = true;
+            } else {
+                $return["message"] = $fileId;
+            }
+            file_put_contents("uploads/$fileId-progress", 0);
+
+            header('Content-type: application/json');
+            echo json_encode($return);
+
+            $size = ob_get_length();
+            header("Content-Length: $size");
+            ob_end_flush(); // Strange behaviour, will not work
+            flush(); // Unless both are called !
+
             $video = $ffmpeg->open('uploads/' . $fileId . ".temp");
 
             $video
@@ -37,16 +56,11 @@ if ($mysqli->connect_errno) {
             $format->setAudioCodec("libmp3lame");
 
             $format->on('progress', function ($video, $format, $percentage) {
-                $_SESSION["progress"] = "$percentage% processed";
+                global $fileId;
+                file_put_contents("uploads/$fileId-progress", $percentage);
             });
 
             $video->save($format, "uploads/$fileId.mp4");
-
-            if (!$mysqli->query("INSERT INTO videos(video_id, video_title, video_desc) VALUES ('$fileId', '$title', '$description')")) {
-                $return["message"] = "failed: (" . $mysqli->errno . ") " . $mysqli->error;
-                $return["error"] = true;
-            }
-            $return["message"] = $fileId;
         }
     } else {
         $return["message"] = "No file uploaded!";

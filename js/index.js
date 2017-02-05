@@ -69,14 +69,16 @@ function uploadFile() {
             xhr.upload.addEventListener("progress", function (evt) {
                 if (evt.lengthComputable) {
                     var percentComplete = evt.loaded / evt.total;
-                    $('#status').text('Progress: ' + Math.round(percentComplete * 100) + "%");
+                    var percent = Math.round(percentComplete * 100);
+                    $('#status').text('Progress: ' + percent + "%");
                 }
             }, false);
 
             xhr.addEventListener("progress", function (evt) {
                 if (evt.lengthComputable) {
                     var percentComplete = evt.loaded / evt.total;
-                    $('#status').text('Progress: ' + Math.round(percentComplete * 100) + "%");
+                    var percent = Math.round(percentComplete * 100);
+                    $('#status').text('Progress: ' + percent + "%");
                 }
             }, false);
 

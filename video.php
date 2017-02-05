@@ -32,15 +32,16 @@ if ($result = $mysqli->query("SELECT video_title, video_desc, video_uploaded FRO
 
 <h1><?php echo htmlspecialchars($row[0]) ?></h1>
 <?php
-if (file_exists("uploads/$value.mp4")) { ?>
+$progress = file_get_contents("uploads/$value-progress");
+
+if (file_exists("uploads/$value.mp4") && $progress == 100) { ?>
     <video controls>
         <source src="uploads/<?php echo $value ?>.mp4" type="video/mp4">
     </video>
     <?php
 } else {
-    $progress = $_SESSION["progress"];
     echo "<p>Video being processed, check back later!</p>";
-    echo "<p>Progress: $progress</p>";
+    echo "<p>Progress: $progress%</p>";
 }
 ?>
 
