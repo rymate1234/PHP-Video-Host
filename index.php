@@ -1,6 +1,6 @@
 <?php include "header.php" ?>
 <body>
-<form id="uploadForm" action="upload.php" method="post">
+<form id="uploadForm" action="upload.php" method="post" enctype="multipart/form-data">
     <h1>Rymate Videos</h1>
     <?php
     if (isset($_SESSION['errorMsg'])) { ?>
@@ -28,7 +28,7 @@
             <div id="holder" class="upload_box">
                 <span>
                     <div id="status">Drag a file or click to select a video</div>
-                    <input type="file" id="fileselect" name="fileselect"/>
+                    <input type="file" id="file" name="file"/>
                 </span>
             </div>
         </label>
