@@ -9,7 +9,11 @@ $fileId = isset($_REQUEST["id"]) ? $mysqli->real_escape_string($_REQUEST["id"]) 
 if ($fileId != null && !file_exists("uploads/$fileId-progress")) {
     file_put_contents("uploads/$fileId-progress", 0);
 
-    $ffmpeg = FFMpeg\FFMpeg::create();
+    $ffmpeg =  FFMpeg\FFMpeg::create(array(
+        'timeout'          => 3600, // The timeout for the underlying process
+        'ffmpeg.threads'   => 6,   // The number of threads that FFMpeg should use
+    ));
+
 
     $video = $ffmpeg->open('uploads/' . $fileId . ".temp");
 
