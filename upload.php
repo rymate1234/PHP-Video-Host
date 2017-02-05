@@ -42,8 +42,8 @@ if ($mysqli->connect_errno) {
 
             $size = ob_get_length();
             header("Content-Length: $size");
-            ob_end_flush(); // Strange behaviour, will not work
-            flush(); // Unless both are called !
+            ob_end_flush();
+            flush();
 
             $video = $ffmpeg->open('uploads/' . $fileId . ".temp");
 
@@ -52,6 +52,11 @@ if ($mysqli->connect_errno) {
                 ->save("uploads/$fileId.jpg");
 
             $format = new FFMpeg\Format\Video\X264();
+
+            $format
+                ->setKiloBitrate(7500)
+                ->setAudioChannels(2)
+                ->setAudioKiloBitrate(256);
 
             $format->setAudioCodec("libmp3lame");
 
