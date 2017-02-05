@@ -2,7 +2,7 @@ var statusText = $('#status');
 var selectedFile;
 
 $(function () {
-    var fileselect = $('#fileselect');
+    var fileselect = $('#file');
     fileselect.on("change", FileSelectHandler);
     $('#uploadForm').on("submit", function (e) {
         e.preventDefault();
