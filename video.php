@@ -11,7 +11,6 @@ if ($value == null) {
     $_SESSION["errorMsg"] = "No ?id=videoid in url!";
 
     die();
-
 }
 
 /* Select queries return a resultset */

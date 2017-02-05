@@ -64,7 +64,7 @@ function uploadFile() {
     form_data.append('file', selectedFile);
 
     $.ajax({
-        xhr: function () {
+        xhr: function (){
             var xhr = new window.XMLHttpRequest();
             xhr.upload.addEventListener("progress", function (evt) {
                 if (evt.lengthComputable) {
@@ -84,7 +84,7 @@ function uploadFile() {
 
             return xhr;
         },
-        url: 'upload.php', // point to server-side PHP script 
+        url: 'upload.php',
         cache: false,
         contentType: false,
         processData: false,
@@ -96,9 +96,25 @@ function uploadFile() {
             }
             else {
                 var url = window.location;
-                url.replace("index.php", "/");
-                console.log(url);
-                window.location = url + "video.php?id=" + res.message;
+
+                var processReq = new FormData();
+                processReq.append('id', res.message);
+
+                $.ajax({
+                    url: 'process.php',
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    data: processReq,
+                    type: 'post'
+                });
+
+                setTimeout(function() {
+                    url.replace("index.php", "/");
+                    console.log(url);
+                    window.location = url + "video.php?id=" + res.message;
+                }, 2000);
+
             }
         }
 
